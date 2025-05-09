@@ -1,0 +1,617 @@
+{
+	"info": {
+		"_postman_id": "61de1110-17a2-4987-9f08-d47490260cf0",
+		"name": "Training",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44060828",
+		"_collection_link": "https://lilitiskandaryan.postman.co/workspace/Lilit-Iskandaryan's-Workspace~7b58c212-70b5-4fba-8f5b-021239d802a4/collection/44060828-61de1110-17a2-4987-9f08-d47490260cf0?action=share&source=collection_link&creator=44060828"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Get current timestamp\r",
+							"const timestamp = Date.now();\r",
+							"\r",
+							"// Create unique username and email\r",
+							"const uniqueUsername = `Lilith_${timestamp}`;\r",
+							"const uniqueEmail = `lilith_${timestamp}@gmail.com`;\r",
+							"\r",
+							"// Set variables\r",
+							"pm.environment.set(\"Lilith_user\", uniqueUsername);\r",
+							"pm.environment.set(\"Lilith_email\", uniqueEmail);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"first_name\": \"Lilith\",\r\n  \"email\": \"{{Lilith_email}}\",\r\n  \"username\": \"{{Lilith_user}}\",\r\n  \"password\": \"training\",\r\n  \"role_id\": 1,\r\n  \"account\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Head_http}}/register/api",
+					"host": [
+						"{{Head_http}}"
+					],
+					"path": [
+						"register",
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var res = JSON.parse(responseBody);\r",
+							"{\r",
+							"pm.environment.set(\"Lilit_token\", res.token);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "training",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{Lilith_user}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{Head_http}}/login/api",
+					"host": [
+						"{{Head_http}}"
+					],
+					"path": [
+						"login",
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User Role",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Lilit_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"role_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Head_http}}/user_role/{{Lilith_user}}",
+					"host": [
+						"{{Head_http}}"
+					],
+					"path": [
+						"user_role",
+						"{{Lilith_user}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login As Admin User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var res = JSON.parse(responseBody);\r",
+							"{\r",
+							"pm.environment.set(\"Admin_Lilith\", res.token);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "training",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{Lilith_user}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{Head_http}}/login/api",
+					"host": [
+						"{{Head_http}}"
+					],
+					"path": [
+						"login",
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add New Course",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var res = JSON.parse(responseBody);\r",
+							"{\r",
+							"pm.environment.set(\"course_id\", res.id);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Admin_Lilith}}}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Lilith_training\",\r\n  \"body\": \"training\",\r\n  \"coursetype\": \"2\",\r\n  \"author\": \"{{Lilith_user}}\",\r\n  \"price\": 120\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Head_http}}/add_course/api",
+					"host": [
+						"{{Head_http}}"
+					],
+					"path": [
+						"add_course",
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Course Price BY ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Admin_Lilith}}}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Head_http}}/course_price/api/{{course_id}}",
+					"host": [
+						"{{Head_http}}"
+					],
+					"path": [
+						"course_price",
+						"api",
+						"{{course_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update course by given course_id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Admin_Lilith}}}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Lilith_New_Course\",\r\n  \"body\": \"updated\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Head_http}}/course/{{course_id}}/update/",
+					"host": [
+						"{{Head_http}}"
+					],
+					"path": [
+						"course",
+						"{{course_id}}",
+						"update",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Account Balance",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Admin_Lilith}}}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Head_http}}/balance/balance_api/",
+					"host": [
+						"{{Head_http}}"
+					],
+					"path": [
+						"balance",
+						"balance_api",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buy Course with Insufficient Balance",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Admin_Lilith}}}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{Head_http}}/buy_course/api/{{course_id}}/{{Lilith_user}}",
+					"host": [
+						"{{Head_http}}"
+					],
+					"path": [
+						"buy_course",
+						"api",
+						"{{course_id}}",
+						"{{Lilith_user}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Amount",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Admin_Lilith}}}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"amount\": 2000,\r\n  \"payment\": \"1\",\r\n  \"card_num\": 44555666777,\r\n  \"exp_date\": \"2026/09/22\",\r\n  \"card_cvv\": \"222\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Head_http}}/add_account_balance/payment_api",
+					"host": [
+						"{{Head_http}}"
+					],
+					"path": [
+						"add_account_balance",
+						"payment_api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buy Course with Sufficient Amount",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Admin_Lilith}}}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{Head_http}}/buy_course/api/{{course_id}}/{{Lilith_user}}",
+					"host": [
+						"{{Head_http}}"
+					],
+					"path": [
+						"buy_course",
+						"api",
+						"{{course_id}}",
+						"{{Lilith_user}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Discounts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Admin_Lilith}}}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"course_type\": \"2\",\r\n  \"discount\": 10,\r\n  \"course_count\": 120\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Head_http}}/set_discount/api",
+					"host": [
+						"{{Head_http}}"
+					],
+					"path": [
+						"set_discount",
+						"api"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
